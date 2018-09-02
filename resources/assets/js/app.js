@@ -17,6 +17,18 @@ window.Vue = require('vue');
 
 Vue.component('example-component', require('./components/ExampleComponent.vue'));
 
+// Vuex
+import Vuex from 'vuex';
+Vue.use(Vuex);
+
+// store
+import store from './store.js'
+
+// Vuetify
+import Vuetify from 'vuetify';
+Vue.use(Vuetify);
+
 const app = new Vue({
-    el: '#app'
+    el: '#app',
+    store: new Vuex.Store(store),
 });

@@ -12,4 +12,15 @@ let mix = require('laravel-mix');
  */
 
 mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/assets/sass/app.scss', 'public/css')
+    .stylus('resources/assets/stylus/vendor.styl', 'public/css')
+    .extract([
+    	'vue',
+    	'vuex',
+    	'vue-router',
+        'vuetify',
+        'vuetify/es5/util/colors',
+        'axios',
+        'lodash'
+    ])
+    .version()
