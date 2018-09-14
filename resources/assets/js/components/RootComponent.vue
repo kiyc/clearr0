@@ -12,29 +12,31 @@
                 <template v-for="item in items">
                     <v-list-tile>
                         <v-list-tile-content>
-                            <v-text-field
-                                v-model="item.value"
-                                :readonly="!item.isEditing"
-                            >
-                                <v-slide-x-reverse-transition
-                                    slot="append-outer"
-                                    mode="out-in"
+                            <v-flex style="width:100%">
+                                <v-text-field
+                                    v-model="item.value"
+                                    :readonly="!item.isEditing"
                                 >
-                                    <v-icon
-                                        class="mt-2 mb-0"
-                                        :color="item.isEditing ? 'success' : 'info'"
-                                        @click="item.isEditing = !item.isEditing"
-                                        v-text="item.isEditing ? 'check' : 'edit'"
-                                    ></v-icon>
-                                </v-slide-x-reverse-transition>
-                                <v-card flat slot="append-outer" v-if="item.isGroup">
-                                    <v-icon
-                                        class="mt-2 mb-0"
-                                        color="info"
-                                        @click="switchTasks(item.id)"
-                                    >arrow_forward</v-icon>
-                                </v-card>
-                            </v-text-field>
+                                    <v-slide-x-reverse-transition
+                                        slot="append-outer"
+                                        mode="out-in"
+                                    >
+                                        <v-icon
+                                            class="mt-2 mb-0"
+                                            :color="item.isEditing ? 'success' : 'info'"
+                                            @click="item.isEditing = !item.isEditing"
+                                            v-text="item.isEditing ? 'check' : 'edit'"
+                                        ></v-icon>
+                                    </v-slide-x-reverse-transition>
+                                    <v-card flat slot="append-outer" v-if="item.isGroup">
+                                        <v-icon
+                                            class="mt-2 mb-0"
+                                            color="info"
+                                            @click="switchTasks(item.id)"
+                                        >arrow_forward</v-icon>
+                                    </v-card>
+                                </v-text-field>
+                            </v-flex>
                         </v-list-tile-content>
                     </v-list-tile>
                 </template>
