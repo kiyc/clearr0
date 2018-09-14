@@ -16,7 +16,7 @@ class GroupController extends Controller
 {
     public function index(Request $request)
     {
-        $items = TaskGroup::orderBy('sort', 'desc')->get();
+        $items = TaskGroup::orderBy('sort', 'desc')->with('tasks')->get();
 
         return response()->json(['items' => $items]);
     }

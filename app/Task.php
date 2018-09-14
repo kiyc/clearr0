@@ -5,17 +5,13 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class TaskGroup extends Model
+class Task extends Model
 {
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'task_groups_id',
+        'content',
         'sort',
     ];
-
-    public function tasks()
-    {
-        return $this->hasMany('App\Task', 'task_groups_id')->orderBy('sort', 'desc');
-    }
 }
