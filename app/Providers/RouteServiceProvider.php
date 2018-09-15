@@ -25,6 +25,8 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::model('group', 'App\TaskGroup');
 
+        Route::model('task', 'App\Task');
+
         parent::boot();
     }
 

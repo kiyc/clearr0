@@ -28,7 +28,7 @@ Route::prefix('api')->name('api.')->middleware(['auth'])->group(function() {
     });
 
     Route::prefix('tasks')->name('task.')->middleware(['auth'])->group(function() {
-        Route::get('/', 'TaskController@index')->name('index');
+        //Route::get('/', 'TaskController@index')->name('index');
         Route::post('/', 'TaskController@store')->name('store');
         Route::patch('/{task}', 'TaskController@update')->name('update');
         Route::delete('/{task}', 'TaskController@remove')->name('remove');
