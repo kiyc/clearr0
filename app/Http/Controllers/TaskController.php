@@ -49,16 +49,19 @@ class TaskController extends Controller
         return response()->json(['items' => $items]);
     }
 
-    public function destroy(Task $task)
+    public function remove(Task $task)
     {
         try {
             DB::transaction(function() use ($task) {
                 $task->delete();
+                Task::where('sort', '>', $task->sort)->decrement('sort');
             });
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
 
-        return response()->json(0);
+        $items = TaskGroup::orderBy('sort', 'desc')->with('tasks')->get();
+
+        return response()->json(['items' => $items]);
     }
 }

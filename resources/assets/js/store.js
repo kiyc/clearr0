@@ -113,7 +113,6 @@ export default {
                         if (group && group.tasks) {
                             dispatch('setTaskItems', group.tasks)
                             commit('setShowGroups', false)
-                            commit('setGroupId', groupId)
                         }
                     })
                     .catch( error => {
@@ -143,7 +142,33 @@ export default {
                         if (group && group.tasks) {
                             dispatch('setTaskItems', group.tasks)
                             commit('setShowGroups', false)
-                            commit('setGroupId', groupId)
+                        }
+                    })
+                    .catch( error => {
+                        console.log(error)
+                    })
+            }
+        },
+        removeItem ({ commit, state, dispatch }, item) {
+            if (state.showGroups) {
+                let url  = '/api/groups/' + item.id
+                axios.delete(url)
+                    .then( res => {
+                        commit('setGroups', res.data.items)
+                        dispatch('setGroupItems', res.data.items)
+                    })
+                    .catch( error => {
+                        console.log(error)
+                    })
+            } else if (state.groupId) {
+                let url  = '/api/tasks/' + item.id
+                axios.delete(url)
+                    .then( res => {
+                        commit('setGroups', res.data.items)
+                        let group = res.data.items.filter( g => g.id == state.groupId ).pop()
+                        if (group && group.tasks) {
+                            dispatch('setTaskItems', group.tasks)
+                            commit('setShowGroups', false)
                         }
                     })
                     .catch( error => {

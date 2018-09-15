@@ -43,6 +43,13 @@
                                     v-model="item.value"
                                     :readonly="!item.isEditing"
                                 >
+                                    <v-card flat slot="append-outer">
+                                        <v-icon
+                                            class="mt-2 mb-0"
+                                            color="warning"
+                                            @click="removeItem(item)"
+                                        >clear</v-icon>
+                                    </v-card>
                                     <v-slide-x-reverse-transition
                                         slot="append-outer"
                                         mode="out-in"
@@ -101,6 +108,7 @@ export default {
             'showNewGroupInput',
             'showNewTaskInput',
             'saveNewItem',
+            'removeItem',
         ]),
         updateItem (item) {
             item.isEditing = !item.isEditing

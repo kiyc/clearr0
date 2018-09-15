@@ -55,16 +55,20 @@ class GroupController extends Controller
         return response()->json(['items' => $items]);
     }
 
-    public function destroy(TaskGroup $group)
+    public function remove(TaskGroup $group)
     {
         try {
             DB::transaction(function() use ($group) {
                 $group->delete();
+                $group->tasks()->delete();
+                TaskGroup::where('sort', '>', $group->sort)->decrement('sort');
             });
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
 
-        return response()->json(0);
+        $items = TaskGroup::orderBy('sort', 'desc')->with('tasks')->get();
+
+        return response()->json(['items' => $items]);
     }
 }
