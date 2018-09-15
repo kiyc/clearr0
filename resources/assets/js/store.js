@@ -84,7 +84,7 @@ export default {
         showNewTaskInput ({ commit }) {
             commit('setShowNewInput', true)
         },
-        saveItem ({ commit, state, dispatch }) {
+        saveNewItem ({ commit, state, dispatch }) {
             if (state.showGroups) {
                 let url  = '/api/groups'
                 let data = { name: state.newValue }
@@ -92,6 +92,21 @@ export default {
                     .then( res => {
                         commit('setShowNewInput', false)
                         commit('setNewValue', '')
+                        commit('setGroups', res.data.items)
+                        dispatch('setGroupItems', res.data.items)
+                    })
+                    .catch( error => {
+                        console.log(error)
+                    })
+            } else if (state.groupId) {
+            }
+        },
+        updateItem ({ commit, state, dispatch }, item) {
+            if (state.showGroups) {
+                let url  = '/api/groups/' + item.id
+                let data = { name: item.value }
+                axios.patch(url, data)
+                    .then( res => {
                         commit('setGroups', res.data.items)
                         dispatch('setGroupItems', res.data.items)
                     })

@@ -43,7 +43,6 @@ class GroupController extends Controller
     {
         try {
             DB::transaction(function() use ($request, $group) {
-                $group = new TaskGroup();
                 $group->fill($request->all());
                 $group->save();
             });
@@ -51,7 +50,9 @@ class GroupController extends Controller
             Log::error($e->getMessage());
         }
 
-        return response()->json(0);
+        $items = TaskGroup::orderBy('sort', 'desc')->with('tasks')->get();
+
+        return response()->json(['items' => $items]);
     }
 
     public function destroy(TaskGroup $group)

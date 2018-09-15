@@ -28,7 +28,7 @@
                                     <v-icon
                                         class="mt-2 mb-0"
                                         color="success"
-                                        @click="saveItem"
+                                        @click="saveNewItem"
                                     >check</v-icon>
                                 </v-card>
                             </v-text-field>
@@ -50,7 +50,7 @@
                                         <v-icon
                                             class="mt-2 mb-0"
                                             :color="item.isEditing ? 'success' : 'info'"
-                                            @click="item.isEditing = !item.isEditing"
+                                            @click="updateItem(item)"
                                             v-text="item.isEditing ? 'check' : 'edit'"
                                         ></v-icon>
                                     </v-slide-x-reverse-transition>
@@ -93,13 +93,22 @@ export default {
     mounted () {
         this.fetchGroups()
     },
-    methods: mapActions([
-        'fetchGroups',
-        'switchTasks',
-        'switchGroups',
-        'showNewGroupInput',
-        'showNewTaskInput',
-        'saveItem',
-    ]),
+    methods: {
+        ...mapActions([
+            'fetchGroups',
+            'switchTasks',
+            'switchGroups',
+            'showNewGroupInput',
+            'showNewTaskInput',
+            'saveNewItem',
+        ]),
+        updateItem (item) {
+            item.isEditing = !item.isEditing
+
+            if (!item.isEditing) {
+                this.$store.dispatch('updateItem', item)
+            }
+        },
+    },
 }
 </script>
