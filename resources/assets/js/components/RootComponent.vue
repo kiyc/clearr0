@@ -2,11 +2,37 @@
     <v-layout>
         <v-flex>
             <v-list>
-                <v-list-tile v-if="!showGroups">
+                <v-list-tile>
                     <v-list-tile-content>
-                        <v-btn fab flat small @click="switchGroups">
+                        <v-flex row>
+                        <v-btn fab flat small @click="switchGroups" v-if="!showGroups">
                             <v-icon color="info">arrow_back</v-icon>
                         </v-btn>
+                        <v-btn fab flat small @click="showNewGroupInput" v-if="showGroups">
+                            <v-icon color="info">add</v-icon>
+                        </v-btn>
+                        <v-btn fab flat small @click="showNewTaskInput" v-else>
+                            <v-icon color="info">add</v-icon>
+                        </v-btn>
+                        </v-flex>
+                    </v-list-tile-content>
+                </v-list-tile>
+                <v-list-tile v-if="showNewInput">
+                    <v-list-tile-content>
+                        <v-flex style="width:100%">
+                            <v-text-field
+                                v-model="newValue"
+                                placeholder="New Item"
+                            >
+                                <v-card flat slot="append-outer">
+                                    <v-icon
+                                        class="mt-2 mb-0"
+                                        color="success"
+                                        @click="saveItem"
+                                    >check</v-icon>
+                                </v-card>
+                            </v-text-field>
+                        </v-flex>
                     </v-list-tile-content>
                 </v-list-tile>
                 <template v-for="item in items">
@@ -53,10 +79,27 @@ export default {
         return {
         }
     },
-    computed: mapState(['items', 'showGroups']),
+    computed: {
+        ...mapState(['items', 'showGroups', 'showNewInput']),
+        newValue: {
+            get () {
+                return this.$store.state.newValue
+            },
+            set (value) {
+                this.$store.commit('setNewValue', value)
+            }
+        },
+    },
     mounted () {
         this.fetchGroups()
     },
-    methods: mapActions(['fetchGroups', 'switchTasks', 'switchGroups']),
+    methods: mapActions([
+        'fetchGroups',
+        'switchTasks',
+        'switchGroups',
+        'showNewGroupInput',
+        'showNewTaskInput',
+        'saveItem',
+    ]),
 }
 </script>

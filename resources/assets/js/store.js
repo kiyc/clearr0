@@ -4,6 +4,9 @@ export default {
         groups: [],
         tasks: [],
         showGroups: true,
+        showNewInput: false,
+        newValue: '',
+        groupId: null,
     },
 
     mutations: {
@@ -19,40 +22,44 @@ export default {
         setShowGroups (state, showGroups) {
             state.showGroups = showGroups
         },
+        setShowNewInput (state, showNewInput) {
+            state.showNewInput = showNewInput
+        },
+        setNewValue (state, newValue) {
+            state.newValue = newValue
+        },
+        setGroupId (state, groupId) {
+            state.groupId = groupId
+        },
     },
 
     actions: {
-        fetchGroups ({ commit }) {
+        setGroupItems ({ commit }, rawItems) {
+            let items = []
+            for (let idx in rawItems) {
+                items.push({
+                    id:        rawItems[idx].id,
+                    value:     rawItems[idx].name,
+                    isGroup:   true,
+                    isEditing: false,
+                })
+            }
+            commit('setItems', items)
+        },
+        fetchGroups ({ commit, dispatch }) {
             axios.get( '/api/groups')
                 .then( (res) => {
-                    let items = []
-                    for (let idx in res.data.items) {
-                        items.push({
-                            id: res.data.items[idx].id,
-                            value: res.data.items[idx].name,
-                            isGroup: true,
-                            isEditing: false,
-                        })
-                    }
                     commit('setGroups', res.data.items)
-                    commit('setItems', items)
+                    dispatch('setGroupItems', res.data.items)
                 })
                 .catch( (res) => {
                     console.log( res )
                 })
         },
-        switchGroups ({ commit, state }) {
-            let items = []
-            for (let idx in state.groups) {
-                items.push({
-                    id: state.groups[idx].id,
-                    value: state.groups[idx].name,
-                    isGroup: true,
-                    isEditing: false,
-                })
-            }
-            commit('setItems', items)
+        switchGroups ({ commit, state, dispatch }) {
+            dispatch('setGroupItems', state.groups)
             commit('setShowGroups', true)
+            commit('setGroupId', null)
         },
         switchTasks ({ commit, state }, groupId) {
             let group = state.groups.filter( g => g.id == groupId ).pop()
@@ -68,6 +75,30 @@ export default {
                 }
                 commit('setItems', items)
                 commit('setShowGroups', false)
+                commit('setGroupId', groupId)
+            }
+        },
+        showNewGroupInput ({ commit }) {
+            commit('setShowNewInput', true)
+        },
+        showNewTaskInput ({ commit }) {
+            commit('setShowNewInput', true)
+        },
+        saveItem ({ commit, state, dispatch }) {
+            if (state.showGroups) {
+                let url  = '/api/groups'
+                let data = { name: state.newValue }
+                axios.post(url, data)
+                    .then( res => {
+                        commit('setShowNewInput', false)
+                        commit('setNewValue', '')
+                        commit('setGroups', res.data.items)
+                        dispatch('setGroupItems', res.data.items)
+                    })
+                    .catch( error => {
+                        console.log(error)
+                    })
+            } else if (state.groupId) {
             }
         },
     },

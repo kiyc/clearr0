@@ -27,13 +27,16 @@ class GroupController extends Controller
             DB::transaction(function() use ($request) {
                 $group = new TaskGroup();
                 $group->fill($request->all());
+                $group->sort = TaskGroup::max('sort') + 1;
                 $group->save();
             });
         } catch (Exception $e) {
             Log::error($e->getMessage());
         }
 
-        return response()->json(0);
+        $items = TaskGroup::orderBy('sort', 'desc')->with('tasks')->get();
+
+        return response()->json(['items' => $items]);
     }
 
     public function update(UpdateGroupRequest $request, TaskGroup $group)
