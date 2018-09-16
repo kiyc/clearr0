@@ -20,9 +20,6 @@
 </head>
 <body>
     <v-app id="app">
-        @if (Auth::check())
-        @include('layouts.share.header')
-        @endif
         <v-content>
             @yield('content')
         </v-content>
