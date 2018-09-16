@@ -19,7 +19,7 @@
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
-    <v-app id="app">
+    <v-app id="app" class="blue" dark>
         <v-content>
             @yield('content')
         </v-content>
