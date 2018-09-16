@@ -23,13 +23,8 @@
                             <v-text-field
                                 v-model="newValue"
                                 placeholder="New Item"
+                                @blur="saveNewItem"
                             >
-                                <v-card flat slot="append-outer" class="blue">
-                                    <v-icon
-                                        class="mt-2 mb-0"
-                                        @click="saveNewItem"
-                                    >check</v-icon>
-                                </v-card>
                             </v-text-field>
                         </v-flex>
                     </v-list-tile-content>
@@ -41,6 +36,8 @@
                                 <v-text-field
                                     v-model="item.value"
                                     :readonly="!item.isEditing"
+                                    @click="switchInput(item)"
+                                    @blur="updateItem(item)"
                                 >
                                     <v-card flat slot="append-outer" class="blue">
                                         <v-icon
@@ -48,16 +45,6 @@
                                             @click="removeItem(item)"
                                         >clear</v-icon>
                                     </v-card>
-                                    <v-slide-x-reverse-transition
-                                        slot="append-outer"
-                                        mode="out-in"
-                                    >
-                                        <v-icon
-                                            class="mt-2 mb-0"
-                                            @click="updateItem(item)"
-                                            v-text="item.isEditing ? 'check' : 'edit'"
-                                        ></v-icon>
-                                    </v-slide-x-reverse-transition>
                                     <v-card flat slot="append-outer" v-if="item.isGroup" class="blue">
                                         <v-icon
                                             class="mt-2 mb-0"
@@ -106,12 +93,12 @@ export default {
             'saveNewItem',
             'removeItem',
         ]),
+        switchInput (item) {
+            item.isEditing = true
+        },
         updateItem (item) {
-            item.isEditing = !item.isEditing
-
-            if (!item.isEditing) {
-                this.$store.dispatch('updateItem', item)
-            }
+            item.isEditing = false
+            this.$store.dispatch('updateItem', item)
         },
     },
 }
