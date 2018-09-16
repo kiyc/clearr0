@@ -1,18 +1,18 @@
 <template>
     <v-layout>
         <v-flex>
-            <v-list>
+            <v-list class="blue" dark>
                 <v-list-tile>
                     <v-list-tile-content>
                         <v-flex row>
                         <v-btn fab flat small @click="switchGroups" v-if="!showGroups">
-                            <v-icon color="info">arrow_back</v-icon>
+                            <v-icon>arrow_back</v-icon>
                         </v-btn>
                         <v-btn fab flat small @click="showNewGroupInput" v-if="showGroups">
-                            <v-icon color="info">add</v-icon>
+                            <v-icon>add</v-icon>
                         </v-btn>
                         <v-btn fab flat small @click="showNewTaskInput" v-else>
-                            <v-icon color="info">add</v-icon>
+                            <v-icon>add</v-icon>
                         </v-btn>
                         </v-flex>
                     </v-list-tile-content>
@@ -24,10 +24,9 @@
                                 v-model="newValue"
                                 placeholder="New Item"
                             >
-                                <v-card flat slot="append-outer">
+                                <v-card flat slot="append-outer" class="blue">
                                     <v-icon
                                         class="mt-2 mb-0"
-                                        color="success"
                                         @click="saveNewItem"
                                     >check</v-icon>
                                 </v-card>
@@ -43,10 +42,9 @@
                                     v-model="item.value"
                                     :readonly="!item.isEditing"
                                 >
-                                    <v-card flat slot="append-outer">
+                                    <v-card flat slot="append-outer" class="blue">
                                         <v-icon
                                             class="mt-2 mb-0"
-                                            color="warning"
                                             @click="removeItem(item)"
                                         >clear</v-icon>
                                     </v-card>
@@ -56,15 +54,13 @@
                                     >
                                         <v-icon
                                             class="mt-2 mb-0"
-                                            :color="item.isEditing ? 'success' : 'info'"
                                             @click="updateItem(item)"
                                             v-text="item.isEditing ? 'check' : 'edit'"
                                         ></v-icon>
                                     </v-slide-x-reverse-transition>
-                                    <v-card flat slot="append-outer" v-if="item.isGroup">
+                                    <v-card flat slot="append-outer" v-if="item.isGroup" class="blue">
                                         <v-icon
                                             class="mt-2 mb-0"
-                                            color="info"
                                             @click="switchTasks(item.id)"
                                         >arrow_forward</v-icon>
                                     </v-card>
